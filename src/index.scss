@@ -10,6 +10,9 @@
 //     align-items: center;
 //   }
 // }
+// html {
+//   height: 100vh;
+// }
 
 #root {
   width: 100vw;
@@ -17,9 +20,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #f5f7f9;
 }
 * {
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
+  // box-sizing: border-box;
 }
