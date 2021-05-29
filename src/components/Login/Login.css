@@ -1,0 +1,21 @@
+.brand-header {
+  font-weight: bold;
+  font-size: 2em;
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+.input-field {
+  margin-bottom: 2em;
+}
+
+.remember-me {
+  margin-top: 1em;
+  margin-bottom: 0, 5em;
+}
+
+.forgot-password {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

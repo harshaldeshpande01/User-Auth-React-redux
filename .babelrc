@@ -1,0 +1,17 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react",
+    "react-app",
+    [
+      "minify",
+      {
+        "builtIns": false
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "lodash"
+  ]
+}
