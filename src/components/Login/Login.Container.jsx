@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import LoginWrapper from './Login.wrapper';
-import { performLogin, performLogout } from './Login.actions';
+import { performLogin, loginSuccess, loginFailure, performLogout } from './Login.actions';
 
 class LoginContainer extends PureComponent {
   // componentDidMount() {
@@ -24,8 +24,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: {
-    login: loginDetails => {
-      return dispatch(performLogin(loginDetails));
+    login: () => {
+      return dispatch(performLogin());
+    },
+    loginSuccess: loginDetails => {
+      return dispatch(loginSuccess(loginDetails));
+    },
+    loginFailure: () => {
+      return dispatch(loginFailure());
     },
     logout: () => {
       return dispatch(performLogout());

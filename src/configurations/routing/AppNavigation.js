@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import DashboardContainer from '../../components/Dashboard/Dashboard.Container';
 
 const LoginContainer = React.lazy(() =>
   import(
@@ -10,8 +11,8 @@ const appRoutes = {
   root: {
     defaultRoute: {
       path: '/',
-      component: LoginContainer,
-      needAuth: true,
+      component: DashboardContainer,
+      needAuth: false,
       exact: true,
     },
   },

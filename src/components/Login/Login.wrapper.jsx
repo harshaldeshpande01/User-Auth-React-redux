@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -10,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import './Login.css'
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,29 +39,47 @@ export default function LoginWrapper(props) {
   const {loading, errors, data, actions} = props
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPasswordError, setShowPasswordError] = useState(false);
+  const history = useHistory();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if(email) {
       setEmailError('');
+      setShowEmailError(false);
       if(password) {
         if(password.length >= 6) {
           setPasswordError('');
-          actions.login({email, password});
+          setShowPasswordError(false);
+          actions.login();
+
+          // API call
+          const response = true;
+          if(response) {
+            actions.loginSuccess({email, password});
+            history.push('/');
+          }
+          else {
+            actions.loginFailure();
+          }
+          // setTimeout(() => {  history.push('/'); }, 1000);
         }
         else {
+          setShowPasswordError(true);
           return setPasswordError('Minimun 6 characters');
         }
       }
       else {
+        setShowPasswordError(true);
         return setPasswordError('Password required');
       }
     }
     else {
+      setShowEmailError(true);
       return setEmailError('Email required');
     }
     return true;
@@ -74,14 +94,12 @@ export default function LoginWrapper(props) {
           <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>Login</span>
         </Typography>
 
-        {data.email}
-        {error}
         {errors}
 
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>
               Dont&apos; have an account?  
-              <Link href="/" variant="body2">
+              <Link href="/login" variant="body2">
               &nbsp;Sign Up
               </Link>
             </Grid>
@@ -98,7 +116,7 @@ export default function LoginWrapper(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            error = {emailError}
+            error = {showEmailError}
             helperText = {emailError}
             value = {email}
             onChange = {(e) => setEmail(e.target.value)}
@@ -113,7 +131,7 @@ export default function LoginWrapper(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            error = {passwordError}
+            error = {showPasswordError}
             helperText = {passwordError}
             value = {password}
             onChange = {(e) => setPassword(e.target.value)}
@@ -140,17 +158,17 @@ export default function LoginWrapper(props) {
             Sign In
           </Button>
           }
-          <Button
+          {/* <Button
             fullWidth
             variant="contained"
             color="primary"
             onClick={() => actions.logout()}
           >
             Logout
-          </Button>
+          </Button> */}
           <Grid container style={{display: 'flex', justifyContent: 'flex-end'}}>
             <Grid item>
-              <Link href="/" variant="body2">
+              <Link href="/login" variant="body2">
                 Forgot Password?
               </Link>
             </Grid>

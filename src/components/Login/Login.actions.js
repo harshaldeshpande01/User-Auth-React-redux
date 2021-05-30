@@ -12,22 +12,29 @@ const loginSuccessCreator = (data) => ({
   type: LOGIN_SUCCESS,
   payload: {
     email: data.email,
-    password: data.passsword,
   }
 });
 
 const loginFailureCreator = () => ({
   type: LOGIN_FAILURE,
-  error: 'Something went wrong',
 });
 
-const performLogin = ({ email, password }) => {
+const performLogin = () => {
   return async (disptach, getState, { apiInstance }) => {
     disptach(initLoginCreator());
+    // await setTimeout(() => {  }, 2000);
+  };
+};
 
-    // Make API call to authenticate and call success or failure action respectively
-    setTimeout(() => { disptach(loginSuccessCreator({email, password})); }, 2000);
-    // disptach(loginFailureCreator());
+const loginSuccess = ({ email, password }) => {
+  return async (disptach, getState, { apiInstance }) => {
+    disptach(loginSuccessCreator({email, password}));
+  };
+};
+
+const loginFailure = () => {
+  return async (disptach, getState, { apiInstance }) => {
+    disptach(loginFailureCreator());
   };
 };
 
@@ -39,4 +46,4 @@ const performLogout = () => {
 
 const dummy = () => {};
 
-export { performLogin, performLogout, dummy };
+export { performLogin, loginSuccess, loginFailure, performLogout, dummy };
