@@ -50,6 +50,7 @@ const store = createStore(
 const persistor = persistStore(store, {}, () => {
   // This is called after rehydrate is done.
   console.log('ReactApp store rehydrate done');
+  
 });
 
 const purgeData = () => {

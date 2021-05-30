@@ -40,48 +40,55 @@ export default function LoginWrapper(props) {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [showEmailError, setShowEmailError] = useState(false);
-  const [showPasswordError, setShowPasswordError] = useState(false);
   const history = useHistory();
+
+  const ValidateEmail = (mail) => {
+  if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
+    {
+      return true
+    }
+    return false
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if(email) {
-      setEmailError('');
-      setShowEmailError(false);
-      if(password) {
-        if(password.length >= 6) {
-          setPasswordError('');
-          setShowPasswordError(false);
-          actions.login();
+      const validEmail = ValidateEmail(email);
+      if(validEmail) {
+        setEmailError('');
+        if(password) {
+          if(password.length >= 6) {
+            setPasswordError('');
+            actions.login();
 
-          // API call
-          const response = true;
-          if(response) {
-            await setTimeout(() => { 
-              actions.loginSuccess({email, password});
-              history.push('/');
-            }, 1000);
+            // API call
+            const response = true;
+            if(response) {
+              await setTimeout(() => { 
+                actions.loginSuccess({email, password});
+                history.push('/');
+              }, 1000);
+            }
+            else {
+              const errorMessage = "Invalid user credentials";
+              actions.loginFailure({errorMessage});
+            }
           }
           else {
-            const errorMessage = "Invalid credentials";
-            actions.loginFailure({errorMessage});
+            return setPasswordError('Minimun 6 characters required');
           }
         }
         else {
-          setShowPasswordError(true);
-          return setPasswordError('Minimun 6 characters');
+          return setPasswordError('Please enter your password');
         }
       }
-      else {
-        setShowPasswordError(true);
-        return setPasswordError('Password required');
+      else{
+        setEmailError('Email address badly formatted');
       }
     }
     else {
-      setShowEmailError(true);
-      return setEmailError('Email required');
+      return setEmailError('Please enter your email address');
     }
     return true;
   }
@@ -117,7 +124,7 @@ export default function LoginWrapper(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            error = {showEmailError}
+            error = {!!emailError}
             helperText = {emailError}
             value = {email}
             onChange = {(e) => setEmail(e.target.value)}
@@ -132,7 +139,7 @@ export default function LoginWrapper(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            error = {showPasswordError}
+            error = {!!passwordError}
             helperText = {passwordError}
             value = {password}
             onChange = {(e) => setPassword(e.target.value)}
