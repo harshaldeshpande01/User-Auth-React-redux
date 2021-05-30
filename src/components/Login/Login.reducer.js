@@ -2,7 +2,7 @@ import { LOGIN_INIT, LOGOUT_INIT, LOGIN_SUCCESS, LOGIN_FAILURE } from './Login.c
 
 const DEFAULT_STATE = {
   loading: false,
-  errors: '',
+  errors: null,
   data: {},
 };
 
@@ -10,9 +10,9 @@ const transformAndStoreLogingData = data => {
   return { ...data };
 };
 
-// const transformErrors = data => {
-//   return [...data];
-// };
+const transformErrors = data => {
+  return data.error.errorMessage;
+};
 
 const LoginReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
@@ -20,14 +20,14 @@ const LoginReducer = (state = DEFAULT_STATE, action) => {
       return { ...state, loading: true };
     case LOGIN_SUCCESS: {
       const userData = transformAndStoreLogingData(action.payload);
-      return { ...state, loading: false, errors: [], data: userData };
+      return { ...state, loading: false, data: userData };
     }
     case LOGIN_FAILURE: {
-      // const err = transformErrors(action.payload);
-      return { ...state, loading: false, data: {}, errors: 'Something went wrong'};
+      const err = transformErrors(action.payload);
+      return { ...state, loading: false, errors: err};
     }
     case LOGOUT_INIT: {
-      return { ...state, loading: false, data: {}, errors: []};
+      return { ...state, loading: false, data: {}, errors: null};
     }
     default:
       return state;

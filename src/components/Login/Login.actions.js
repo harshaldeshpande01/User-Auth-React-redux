@@ -15,31 +15,34 @@ const loginSuccessCreator = (data) => ({
   }
 });
 
-const loginFailureCreator = () => ({
+const loginFailureCreator = (errorMessage) => ({
   type: LOGIN_FAILURE,
+  payload: {
+    error: errorMessage,
+  }
 });
 
 const performLogin = () => {
-  return async (disptach, getState, { apiInstance }) => {
+  return async (disptach) => {
     disptach(initLoginCreator());
     // await setTimeout(() => {  }, 2000);
   };
 };
 
-const loginSuccess = ({ email, password }) => {
-  return async (disptach, getState, { apiInstance }) => {
-    disptach(loginSuccessCreator({email, password}));
+const loginSuccess = ( email ) => {
+  return async (disptach) => {
+    disptach(loginSuccessCreator(email));
   };
 };
 
-const loginFailure = () => {
-  return async (disptach, getState, { apiInstance }) => {
-    disptach(loginFailureCreator());
+const loginFailure = (errorMessage) => {
+  return async (disptach) => {
+    disptach(loginFailureCreator(errorMessage));
   };
 };
 
 const performLogout = () => {
-  return async (disptach, getState, { apiInstance }) => {
+  return async (disptach) => {
     disptach(initLogoutCreator());
   };
 };

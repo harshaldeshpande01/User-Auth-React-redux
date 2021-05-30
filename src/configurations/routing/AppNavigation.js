@@ -12,7 +12,7 @@ const appRoutes = {
     defaultRoute: {
       path: '/',
       component: DashboardContainer,
-      needAuth: false,
+      needAuth: true,
       exact: true,
     },
   },

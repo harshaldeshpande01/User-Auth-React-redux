@@ -13,10 +13,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(3),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -60,13 +59,15 @@ export default function LoginWrapper(props) {
           // API call
           const response = true;
           if(response) {
-            actions.loginSuccess({email, password});
-            history.push('/');
+            await setTimeout(() => { 
+              actions.loginSuccess({email, password});
+              history.push('/');
+            }, 1000);
           }
           else {
-            actions.loginFailure();
+            const errorMessage = "Invalid credentials";
+            actions.loginFailure({errorMessage});
           }
-          // setTimeout(() => {  history.push('/'); }, 1000);
         }
         else {
           setShowPasswordError(true);
@@ -90,11 +91,11 @@ export default function LoginWrapper(props) {
       <CssBaseline />
       <div className={classes.paper}>
 
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" style={{marginTop: '1em'}}>
           <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>Login</span>
         </Typography>
 
-        {errors}
+        {errors ? <Alert severity="error">{errors}</Alert> : <></>}
 
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>

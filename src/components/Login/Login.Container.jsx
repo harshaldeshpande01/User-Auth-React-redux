@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import LoginWrapper from './Login.wrapper';
 import { performLogin, loginSuccess, loginFailure, performLogout } from './Login.actions';
+import {store} from '../../configurations/redux/store';
 
 class LoginContainer extends PureComponent {
   // componentDidMount() {
@@ -11,6 +12,7 @@ class LoginContainer extends PureComponent {
   // }
   
   render() {
+    console.log(store.getState());
     const {loading, errors, data, actions} = this.props
     return <LoginWrapper loading={loading} errors={errors} data={data} actions={actions}/>;
   }
@@ -30,8 +32,8 @@ const mapDispatchToProps = dispatch => ({
     loginSuccess: loginDetails => {
       return dispatch(loginSuccess(loginDetails));
     },
-    loginFailure: () => {
-      return dispatch(loginFailure());
+    loginFailure: errorMessage => {
+      return dispatch(loginFailure(errorMessage));
     },
     logout: () => {
       return dispatch(performLogout());
