@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginWrapper(props) {
   const classes = useStyles();
-  const {loading, errors, data, actions} = props
+  const {loading, errors, actions} = props
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');

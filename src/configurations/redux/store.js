@@ -48,7 +48,7 @@ const store = createStore(
 );
 
 const persistor = persistStore(store, {}, () => {
-  // This is called fater rehydraete is done.
+  // This is called after rehydrate is done.
   console.log('ReactApp store rehydrate done');
 });
 
