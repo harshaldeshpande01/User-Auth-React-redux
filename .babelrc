@@ -6,6 +6,7 @@
     [
       "minify",
       {
+        "mangle": false,
         "builtIns": false
       }
     ]

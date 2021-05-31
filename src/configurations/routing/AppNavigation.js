@@ -7,6 +7,12 @@ const LoginContainer = React.lazy(() =>
   ),
 );
 
+const Register = React.lazy(() =>
+  import(
+    'components/Register/Register' /* webpackChunkName: "Login.Container" */
+  ),
+);
+
 const appRoutes = {
   root: {
     defaultRoute: {
@@ -20,6 +26,12 @@ const appRoutes = {
     login: {
       path: '/login',
       component: LoginContainer,
+      needAuth: false,
+      exact: false,
+    },
+    register: {
+      path: '/register',
+      component: Register,
       needAuth: false,
       exact: false,
     },

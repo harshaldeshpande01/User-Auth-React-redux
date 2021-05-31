@@ -107,7 +107,7 @@ export default function LoginWrapper(props) {
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>
               Dont&apos; have an account?  
-              <Link href="/register" variant="body2">
+              <Link href="/login" variant="body2">
               &nbsp;Sign Up
               </Link>
             </Grid>

@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
-import {useHistory} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -33,14 +30,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginWrapper(props) {
+export default function Register() {
   const classes = useStyles();
-  const {loading, errors, actions} = props
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const history = useHistory();
+  const [confirmError, setConfirmError] = useState('');
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const ValidateEmail = (mail) => {
   if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
@@ -60,19 +60,30 @@ export default function LoginWrapper(props) {
         if(password) {
           if(password.length >= 6) {
             setPasswordError('');
-            actions.login();
-
-            // API call
-            const response = true;
-            if(response) {
-              await setTimeout(() => { 
-                actions.loginSuccess({email, password});
-                history.push('/');
-              }, 1000);
+            if(confirm) {
+              if(confirm === password) {
+                setConfirmError('');
+                // Make API call
+                setIsLoading(true);
+                const response = true;
+                if(response) {
+                  await setTimeout(() => { 
+                    setSeverity('success');
+                    setMessage('Account created login to continue');
+                    setIsLoading(false);
+                  }, 1000);
+                }
+                else {
+                  setSeverity('error');
+                  setMessage('Something went wrong');
+                }
+              }
+              else {
+                setConfirmError('Passwords do not match');
+              }
             }
             else {
-              const errorMessage = "Invalid user credentials";
-              actions.loginFailure({errorMessage});
+              setConfirmError('Please confirm you password');
             }
           }
           else {
@@ -99,16 +110,16 @@ export default function LoginWrapper(props) {
       <div className={classes.paper}>
 
         <Typography component="h1" variant="h5" style={{marginTop: '1em'}}>
-          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>Login</span>
+          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>SignUp</span>
         </Typography>
 
-        {errors ? <Alert severity="error">{errors}</Alert> : <></>}
+        {message ? <Alert severity={severity}>{message}</Alert> : <></>}
 
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>
-              Dont&apos; have an account?  
-              <Link href="/register" variant="body2">
-              &nbsp;Sign Up
+              Already have an account?  
+              <Link href="/login" variant="body2">
+              &nbsp;Login
               </Link>
             </Grid>
         </Grid>
@@ -144,11 +155,22 @@ export default function LoginWrapper(props) {
             value = {password}
             onChange = {(e) => setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="confirm"
+            label="Confirm"
+            type="password"
+            id="confirm"
+            autoComplete="current-password"
+            error = {!!confirmError}
+            helperText = {confirmError}
+            value = {confirm}
+            onChange = {(e) => setConfirm(e.target.value)}
           />
-          {loading ? 
+          {isLoading ? 
           <Grid container align="center">
             <Grid item xs>
               <CircularProgress/>
@@ -161,26 +183,11 @@ export default function LoginWrapper(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={loading}
+            disabled={isLoading}
           >
-            Sign In
+            Sign Up
           </Button>
           }
-          {/* <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={() => actions.logout()}
-          >
-            Logout
-          </Button> */}
-          <Grid container style={{display: 'flex', justifyContent: 'flex-end'}}>
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Forgot Password?
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
