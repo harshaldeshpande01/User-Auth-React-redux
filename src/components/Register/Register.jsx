@@ -63,6 +63,7 @@ export default function Register() {
             if(confirm) {
               if(confirm === password) {
                 setConfirmError('');
+
                 // Make API call
                 setIsLoading(true);
                 const response = true;
@@ -73,9 +74,13 @@ export default function Register() {
                     setIsLoading(false);
                   }, 1000);
                 }
+
                 else {
-                  setSeverity('error');
-                  setMessage('Something went wrong');
+                  await setTimeout(() => { 
+                    setSeverity('error');
+                    setMessage('Something went wrong');
+                    setIsLoading(false);
+                  }, 1000);
                 }
               }
               else {
@@ -117,10 +122,12 @@ export default function Register() {
 
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>
-              Already have an account?  
-              <Link href="/login" variant="body2">
-              &nbsp;Login
-              </Link>
+              <Typography color='textSecondary' variant="body2">
+                Dont&apos; have an account? 
+                <Link href="/login" variant="body2">
+                  &nbsp;Login
+                </Link>
+              </Typography> 
             </Grid>
         </Grid>
 

@@ -1,4 +1,4 @@
-import { LOGIN_INIT, LOGOUT_INIT, LOGIN_SUCCESS, LOGIN_FAILURE} from './Login.constants';
+import { LOGIN_INIT, LOGOUT_INIT, LOGIN_SUCCESS, LOGIN_FAILURE} from './auth.constants';
 
 const initLoginCreator = () => ({
   type: LOGIN_INIT,

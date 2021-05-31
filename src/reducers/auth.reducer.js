@@ -1,4 +1,4 @@
-import { LOGIN_INIT, LOGOUT_INIT, LOGIN_SUCCESS, LOGIN_FAILURE } from './Login.constants';
+import { LOGIN_INIT, LOGOUT_INIT, LOGIN_SUCCESS, LOGIN_FAILURE } from '../actions/auth.constants';
 
 const DEFAULT_STATE = {
   loading: false,
@@ -14,7 +14,7 @@ const transformErrors = data => {
   return data.error.errorMessage;
 };
 
-const LoginReducer = (state = DEFAULT_STATE, action) => {
+const AuthReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case LOGIN_INIT:
       return { ...state, loading: true };
@@ -34,4 +34,4 @@ const LoginReducer = (state = DEFAULT_STATE, action) => {
   }
 };
 
-export default LoginReducer;
+export default AuthReducer;

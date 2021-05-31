@@ -84,7 +84,7 @@ export default function LoginWrapper(props) {
         }
       }
       else{
-        setEmailError('Email address badly formatted');
+        return setEmailError('Email address badly formatted');
       }
     }
     else {
@@ -105,11 +105,13 @@ export default function LoginWrapper(props) {
         {errors ? <Alert severity="error">{errors}</Alert> : <></>}
 
         <Grid container style={{marginTop: '2.5em'}}>
-            <Grid item xs>
-              Dont&apos; have an account?  
-              <Link href="/register" variant="body2">
-              &nbsp;Sign Up
-              </Link>
+            <Grid item xs style={{display: 'flex', alignItems: 'center'}}>
+              <Typography color='textSecondary' variant="body2">
+                Dont&apos; have an account? 
+                <Link href="/register" variant="body2">
+                  &nbsp;Register
+                </Link>
+              </Typography> 
             </Grid>
         </Grid>
 
@@ -146,7 +148,11 @@ export default function LoginWrapper(props) {
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            label={
+                    <Typography color='textSecondary'>
+                      Remember me
+                    </Typography> 
+                  }
           />
           {loading ? 
           <Grid container align="center">
@@ -176,7 +182,7 @@ export default function LoginWrapper(props) {
           </Button> */}
           <Grid container style={{display: 'flex', justifyContent: 'flex-end'}}>
             <Grid item>
-              <Link href="/login" variant="body2">
+              <Link href="/forgot-pass" variant="body2">
                 Forgot Password?
               </Link>
             </Grid>

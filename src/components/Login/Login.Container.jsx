@@ -3,12 +3,9 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import LoginWrapper from './Login.wrapper';
-import { performLogin, loginSuccess, loginFailure, performLogout } from './Login.actions';
+import { performLogin, loginSuccess, loginFailure, performLogout } from '../../actions/auth.actions';
 
 class LoginContainer extends PureComponent {
-  // componentDidMount() {
-    // actions.login({ email: 'ankit@gmail.com', password: 'password' });
-  // }
   
   render() {
     const {loading, errors, data, actions} = this.props
@@ -17,9 +14,9 @@ class LoginContainer extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  loading: state.login.loading,
-  errors: state.login.errors,
-  data: state.login.data,
+  loading: state.auth.loading,
+  errors: state.auth.errors,
+  data: state.auth.data,
 });
 
 const mapDispatchToProps = dispatch => ({

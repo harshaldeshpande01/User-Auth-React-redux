@@ -13,6 +13,12 @@ const Register = React.lazy(() =>
   ),
 );
 
+const ForgotPass = React.lazy(() =>
+  import(
+    'components/ForgotPass/ForgotPass' /* webpackChunkName: "Login.Container" */
+  ),
+);
+
 const appRoutes = {
   root: {
     defaultRoute: {
@@ -32,6 +38,12 @@ const appRoutes = {
     register: {
       path: '/register',
       component: Register,
+      needAuth: false,
+      exact: false,
+    },
+    forgotPass: {
+      path: '/forgot-pass',
+      component: ForgotPass,
       needAuth: false,
       exact: false,
     },
