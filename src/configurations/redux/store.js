@@ -14,15 +14,16 @@ const apiInstance = new Api();
 const isDev = process.env.NODE_ENV === 'development';
 const compressor = createCompressor({});
 const encryptor = createEncryptor({
-  secretKey: 'ReactApp',
+  secretKey: 'ReactReduxAuth',
   onError(error) {
     // Handle the error.
     console.log('Error while encryption', error);
   },
 });
+// const encryptor = createEncryptor({});
 const persistConfig = {
   version: 0,
-  key: 'ReactApp',
+  key: 'ReactReduxAuth',
   storage: persistStorage,
   blacklist: [],
   transforms: isDev ? [] : [compressor, encryptor],
