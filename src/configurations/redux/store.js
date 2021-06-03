@@ -25,7 +25,7 @@ const persistConfig = {
   version: 0,
   key: 'ReactReduxAuth',
   storage: persistStorage,
-  blacklist: [],
+  blacklist: ['register'],
   transforms: isDev ? [] : [compressor, encryptor],
 };
 

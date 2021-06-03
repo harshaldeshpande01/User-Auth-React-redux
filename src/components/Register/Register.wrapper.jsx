@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import {pageConst} from './Register.pageConstants';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(3),
@@ -30,17 +32,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register() {
+export default function Register(props) {
   const classes = useStyles();
+  const {pageTitle, pageEmail, pagePassword, pageConfirm, pageButton} = pageConst;
+  const {loading, error, data, actions} = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmError, setConfirmError] = useState('');
-  const [message, setMessage] = useState('');
-  const [severity, setSeverity] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const ValidateEmail = (mail) => {
   if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
@@ -53,72 +54,52 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(email) {
-      const validEmail = ValidateEmail(email);
-      if(validEmail) {
-        setEmailError('');
-        if(password) {
-          if(password.length >= 6) {
-            setPasswordError('');
-            if(confirm) {
-              if(confirm === password) {
-                setConfirmError('');
-
-                // Make API call
-                setIsLoading(true);
-                const response = true;
-                if(response) {
-                  await setTimeout(() => { 
-                    setSeverity('success');
-                    setMessage('Account created login to continue');
-                    setIsLoading(false);
-                  }, 1000);
-                }
-
-                else {
-                  await setTimeout(() => { 
-                    setSeverity('error');
-                    setMessage('Something went wrong');
-                    setIsLoading(false);
-                  }, 1000);
-                }
-              }
-              else {
-                setConfirmError('Passwords do not match');
-              }
-            }
-            else {
-              setConfirmError('Please confirm you password');
-            }
-          }
-          else {
-            return setPasswordError('Minimun 6 characters required');
-          }
-        }
-        else {
-          return setPasswordError('Please enter your password');
-        }
-      }
-      else{
-        setEmailError('Email address badly formatted');
-      }
+    if(!email) {
+      return setEmailError(pageEmail.empty);
     }
-    else {
-      return setEmailError('Please enter your email address');
+
+    if(!ValidateEmail(email)) {
+      return setEmailError(pageEmail.invalid);
     }
+
+    setEmailError('');
+
+    if(!password) {
+      return setPasswordError(pagePassword.empty);
+    }
+
+    if(password.length < 6) {
+      return setPasswordError(pagePassword.invalid);
+    }
+
+    setPasswordError('');
+
+    if(!confirm) {
+      return setConfirmError(pageConfirm.empty);
+    }
+
+    if(confirm !== password) {
+      return setConfirmError(pageConfirm.invalid);
+    }
+
+    setConfirmError('');
+
+    actions.register({email, password});
+
     return true;
   }
 
   return (
-    <Container component="main" maxWidth="xs" className="login-container">
+    <Container key={props} component="main" maxWidth="xs" className="login-container">
       <CssBaseline />
       <div className={classes.paper}>
 
         <Typography component="h1" variant="h5" style={{marginTop: '1em'}}>
-          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>SignUp</span>
+          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>{pageTitle}</span>
         </Typography>
 
-        {message ? <Alert severity={severity}>{message}</Alert> : <></>}
+        {data && data.email ? <Alert severity='success'>{data.email}</Alert> : <></>}
+        {error ? <Alert severity='error'>{error}</Alert> : <></>}
 
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>
@@ -137,10 +118,9 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id={pageEmail.id}
+            label={pageEmail.label}
+            name={pageEmail.name}
             autoFocus
             error = {!!emailError}
             helperText = {emailError}
@@ -152,11 +132,10 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+            name={pagePassword.name}
+            label={pagePassword.label}
+            type={pagePassword.type}
+            id={pagePassword.id}
             error = {!!passwordError}
             helperText = {passwordError}
             value = {password}
@@ -167,17 +146,16 @@ export default function Register() {
             margin="normal"
             required
             fullWidth
-            name="confirm"
-            label="Confirm"
-            type="password"
-            id="confirm"
-            autoComplete="current-password"
+            name={pageConfirm.name}
+            label={pageConfirm.label}
+            type={pageConfirm.type}
+            id={pageConfirm.id}
             error = {!!confirmError}
             helperText = {confirmError}
             value = {confirm}
             onChange = {(e) => setConfirm(e.target.value)}
           />
-          {isLoading ? 
+          {loading ? 
           <Grid container align="center">
             <Grid item xs>
               <CircularProgress/>
@@ -190,9 +168,9 @@ export default function Register() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            disabled={isLoading}
+            disabled={loading}
           >
-            Sign Up
+            {pageButton.label}
           </Button>
           }
         </form>

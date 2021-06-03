@@ -9,7 +9,7 @@ const LoginContainer = React.lazy(() =>
 
 const Register = React.lazy(() =>
   import(
-    'components/Register/Register' /* webpackChunkName: "Login.Container" */
+    'components/Register/Register.Container' /* webpackChunkName: "Login.Container" */
   ),
 );
 
