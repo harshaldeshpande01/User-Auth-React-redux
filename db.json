@@ -44,6 +44,16 @@
       "email": "test33@gmail.com",
       "password": "pass34",
       "id": 9
+    },
+    {
+      "email": "test44@g.com",
+      "password": "password",
+      "id": 10
+    },
+    {
+      "email": "hdeshpande@students.com",
+      "password": "something",
+      "id": 11
     }
   ]
 }

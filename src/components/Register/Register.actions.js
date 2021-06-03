@@ -14,11 +14,11 @@ const registerSuccessCreator = (email) => ({
   }
 });
 
-const registerFailureCreator = () => ({
+const registerFailureCreator = (message) => ({
   type: REGISTER_FAILURE,
   payload: {
     error: {
-      message: 'Something went wrong!'
+      message
     }
   }
 });
@@ -35,12 +35,11 @@ const performRegister = (data) => {
     }
 
     try {
-      await apiInstance.fetch(options);
-      disptach(registerSuccessCreator(data.email));
+      const response = await apiInstance.fetch(options);
+      disptach(registerSuccessCreator(response.data.email));
     }
-    catch(err) {
-      console.log(err);
-      disptach(registerFailureCreator());
+    catch(error) {
+      disptach(registerFailureCreator(error.message));
     }
 
   };
