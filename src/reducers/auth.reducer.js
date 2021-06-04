@@ -10,9 +10,9 @@ const transformAndStoreLogingData = data => {
   return { ...data };
 };
 
-const transformErrors = data => {
-  return data.error.errorMessage;
-};
+// const transformErrors = data => {
+//   return data.error.errorMessage;
+// };
 
 const AuthReducer = (state = DEFAULT_STATE, action) => {
   switch (action.type) {
@@ -23,7 +23,7 @@ const AuthReducer = (state = DEFAULT_STATE, action) => {
       return { ...state, loading: false, data: userData };
     }
     case LOGIN_FAILURE: {
-      const err = transformErrors(action.payload);
+      const err = action.payload.error;
       return { ...state, loading: false, errors: err};
     }
     case LOGOUT_INIT: {

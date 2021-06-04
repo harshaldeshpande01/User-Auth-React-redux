@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
@@ -35,12 +35,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginWrapper(props) {
   const classes = useStyles();
-  const {loading, errors, actions} = props
+  const {loading, errors, data, actions} = props
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const history = useHistory();
+
+  useEffect(()=>{
+    if(data && data.email)
+        history.push('/');
+  }, [data])
 
   const ValidateEmail = (mail) => {
   if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
@@ -60,20 +65,21 @@ export default function LoginWrapper(props) {
         if(password) {
           if(password.length >= 6) {
             setPasswordError('');
-            actions.login();
+            actions.login({email, password});
+            // history.push('/');
 
             // API call
-            const response = true;
-            if(response) {
-              await setTimeout(() => { 
-                actions.loginSuccess({email, password});
-                history.push('/');
-              }, 1000);
-            }
-            else {
-              const errorMessage = "Invalid user credentials";
-              actions.loginFailure({errorMessage});
-            }
+            // const response = true;
+            // if(response) {
+            //   await setTimeout(() => { 
+            //     actions.loginSuccess({email, password});
+            //     history.push('/');
+            //   }, 1000);
+            // }
+            // else {
+            //   const errorMessage = "Invalid user credentials";
+            //   actions.loginFailure({errorMessage});
+            // }
           }
           else {
             return setPasswordError('Minimun 6 characters required');

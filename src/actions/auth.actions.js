@@ -1,4 +1,5 @@
 import { LOGIN_INIT, LOGOUT_INIT, LOGIN_SUCCESS, LOGIN_FAILURE} from './auth.constants';
+import apiRoutes from '../configurations/network/apiRoutes';
 
 const initLoginCreator = () => ({
   type: LOGIN_INIT,
@@ -8,38 +9,60 @@ const initLogoutCreator = () => ({
   type: LOGOUT_INIT,
 });
 
-const loginSuccessCreator = (data) => ({
+const loginSuccessCreator = (email) => ({
   type: LOGIN_SUCCESS,
   payload: {
-    email: data.email,
+    email,
   }
 });
 
-const loginFailureCreator = (errorMessage) => ({
+const loginFailureCreator = (error) => ({
   type: LOGIN_FAILURE,
   payload: {
-    error: errorMessage,
+    error
   }
 });
 
-const performLogin = () => {
-  return async (disptach) => {
+const performLogin = ({email, password}) => {
+  return async (disptach, getState, {apiInstance}) => {
     disptach(initLoginCreator());
-    // await setTimeout(() => {  }, 2000);
+    
+    const options = {
+      url: `${apiRoutes.authentication.login}?email=${email}`,
+      method: 'GET',
+    }
+
+    try {
+      const response = await apiInstance.fetch(options);
+      if(response) {
+        const user = response.data[0];
+        if(user.password === password) {
+          disptach(loginSuccessCreator(email));
+        }
+        else {
+          disptach(loginFailureCreator('Incorrect password'));
+        }
+      }
+      
+    }
+    catch(error) {
+      disptach(loginFailureCreator('No account found with this email. Please register first'));
+    }
+
   };
 };
 
-const loginSuccess = ( email ) => {
-  return async (disptach) => {
-    disptach(loginSuccessCreator(email));
-  };
-};
+// const loginSuccess = ( email ) => {
+//   return async (disptach) => {
+//     disptach(loginSuccessCreator(email));
+//   };
+// };
 
-const loginFailure = (errorMessage) => {
-  return async (disptach) => {
-    disptach(loginFailureCreator(errorMessage));
-  };
-};
+// const loginFailure = (errorMessage) => {
+//   return async (disptach) => {
+//     disptach(loginFailureCreator(errorMessage));
+//   };
+// };
 
 const performLogout = () => {
   return async (disptach) => {
@@ -49,4 +72,4 @@ const performLogout = () => {
 
 const dummy = () => {};
 
-export { performLogin, loginSuccess, loginFailure, performLogout, dummy };
+export { performLogin, performLogout, dummy };
