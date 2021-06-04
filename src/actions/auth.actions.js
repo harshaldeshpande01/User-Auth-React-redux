@@ -52,18 +52,6 @@ const performLogin = ({email, password}) => {
   };
 };
 
-// const loginSuccess = ( email ) => {
-//   return async (disptach) => {
-//     disptach(loginSuccessCreator(email));
-//   };
-// };
-
-// const loginFailure = (errorMessage) => {
-//   return async (disptach) => {
-//     disptach(loginFailureCreator(errorMessage));
-//   };
-// };
-
 const performLogout = () => {
   return async (disptach) => {
     disptach(initLogoutCreator());
