@@ -1,7 +1,5 @@
-import Api from 'utils/Api';
 import { REGISTER_INIT, REGISTER_SUCCESS, REGISTER_FAILURE} from './Register.actionConstants';
-
-const apiInstance = new Api();
+import apiRoutes from '../../configurations/network/apiRoutes';
 
 const initRegisterCreator = () => ({
   type: REGISTER_INIT,
@@ -25,11 +23,11 @@ const registerFailureCreator = (message) => ({
 
 
 const performRegister = (data) => {
-  return async (disptach) => {
+  return async (disptach, getState, {apiInstance}) => {
     disptach(initRegisterCreator());
 
     const options = {
-      url: 'http://localhost:3000/Users',
+      url: apiRoutes.authentication.register,
       method: 'POST',
       data
     }
