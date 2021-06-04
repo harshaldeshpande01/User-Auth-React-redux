@@ -66,20 +66,6 @@ export default function LoginWrapper(props) {
           if(password.length >= 6) {
             setPasswordError('');
             actions.login({email, password});
-            // history.push('/');
-
-            // API call
-            // const response = true;
-            // if(response) {
-            //   await setTimeout(() => { 
-            //     actions.loginSuccess({email, password});
-            //     history.push('/');
-            //   }, 1000);
-            // }
-            // else {
-            //   const errorMessage = "Invalid user credentials";
-            //   actions.loginFailure({errorMessage});
-            // }
           }
           else {
             return setPasswordError('Minimun 6 characters required');
