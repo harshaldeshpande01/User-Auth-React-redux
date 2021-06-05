@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import DashboardWrapper from './Dashboard.wrapper';
-import { performLogout } from '../../actions/auth.actions';
+import { performLogout } from '../Login/Login.actions';
 
 class DashboardContainer extends PureComponent {
   
@@ -13,7 +13,7 @@ class DashboardContainer extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  data: state.auth.data,
+  data: state.login.data,
 });
 
 const mapDispatchToProps = dispatch => ({

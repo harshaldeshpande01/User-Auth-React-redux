@@ -1,5 +1,6 @@
 .DS_Store
 jsconfig.json
+db.json
 node_modules
 build
 coverage

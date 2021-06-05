@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register(props) {
   const classes = useStyles();
-  const {pageTitle, pageEmail, pagePassword, pageConfirm, pageButton} = pageConst;
+  const {pageTitle, pageLoginLink, pageEmail, pagePassword, pageConfirm, pageButton} = pageConst;
   const {loading, error, data, actions} = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -104,9 +104,9 @@ export default function Register(props) {
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs>
               <Typography color='textSecondary' variant="body2">
-                Dont&apos; have an account? 
+                {pageLoginLink.label}
                 <Link href="/login" variant="body2">
-                  &nbsp;Login
+                  &nbsp;{pageLoginLink.link}
                 </Link>
               </Typography> 
             </Grid>

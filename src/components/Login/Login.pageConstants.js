@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/prefer-default-export
 export const pageConst = {
-    pageTitle: 'SignUp',
-    pageLoginLink: {
-        label: 'Already have an account?',
-        link: 'Login'
+    pageTitle: 'Login',
+    pageRegisterLink: {
+        label: 'Don\'t have an account?',
+        link: 'Register'
     },
     pageEmail: {
         label: 'Email Address',
@@ -20,15 +20,8 @@ export const pageConst = {
         empty: 'Please provide your password',
         invalid: 'Minimun 6 characters required'
     },
-    pageConfirm: {
-        label: 'Confirm',
-        name: 'password',
-        id: 'confirm',
-        type: 'password',
-        empty: 'Please confirm your password',
-        invalid: 'Passwords do not match'
-    },
     pageButton: { 
-        label: 'Sign Up'
-    }
+        label: 'Sign In'
+    },
+    pageForgotLink: 'Forgot Password?'
 }

@@ -2,10 +2,7 @@ import {store} from '../configurations/redux/store';
 
 const isAuthenticated = () => {
     const state = store.getState();
-    // if((state === undefined) || (state === null)) {
-    //     return false;
-    // }
-    const {data} = state.auth;
+    const {data} = state.login;
     if(data !== undefined) {
         if(data.email) {
             return true;

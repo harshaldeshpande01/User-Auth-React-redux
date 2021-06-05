@@ -13,6 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import {pageConst} from './Login.pageConstants';
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(3),
@@ -35,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginWrapper(props) {
   const classes = useStyles();
-  const {loading, errors, data, actions} = props
+  const {pageTitle, pageRegisterLink, pageEmail, pagePassword, pageButton, pageForgotLink} = pageConst;
+  const {loading, error, data, actions} = props
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -58,30 +61,28 @@ export default function LoginWrapper(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(email) {
-      const validEmail = ValidateEmail(email);
-      if(validEmail) {
-        setEmailError('');
-        if(password) {
-          if(password.length >= 6) {
-            setPasswordError('');
-            actions.login({email, password});
-          }
-          else {
-            return setPasswordError('Minimun 6 characters required');
-          }
-        }
-        else {
-          return setPasswordError('Please enter your password');
-        }
-      }
-      else{
-        return setEmailError('Email address badly formatted');
-      }
+    if(!email) {
+      return setEmailError(pageEmail.empty);
     }
-    else {
-      return setEmailError('Please enter your email address');
+
+    if(!ValidateEmail(email)) {
+      return setEmailError(pageEmail.invalid);
     }
+
+    setEmailError('');
+
+    if(!password) {
+      return setPasswordError(pagePassword.empty);
+    }
+
+    if(password.length < 6) {
+      return setPasswordError(pagePassword.invalid);
+    }
+
+    setPasswordError('');
+
+    actions.login({email, password});
+
     return true;
   }
 
@@ -91,17 +92,17 @@ export default function LoginWrapper(props) {
       <div className={classes.paper}>
 
         <Typography component="h1" variant="h5" style={{marginTop: '1em'}}>
-          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>Login</span>
+          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>{pageTitle}</span>
         </Typography>
 
-        {errors ? <Alert severity="error">{errors}</Alert> : <></>}
+        {error ? <Alert severity="error">{error}</Alert> : <></>}
 
         <Grid container style={{marginTop: '2.5em'}}>
             <Grid item xs style={{display: 'flex', alignItems: 'center'}}>
               <Typography color='textSecondary' variant="body2">
-                Dont&apos; have an account? 
+                {pageRegisterLink.label}
                 <Link href="/register" variant="body2">
-                  &nbsp;Register
+                  &nbsp;{pageRegisterLink.link}
                 </Link>
               </Typography> 
             </Grid>
@@ -113,10 +114,9 @@ export default function LoginWrapper(props) {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id={pageEmail.id}
+            label={pageEmail.label}
+            name={pageEmail.name}
             autoFocus
             error = {!!emailError}
             helperText = {emailError}
@@ -128,11 +128,10 @@ export default function LoginWrapper(props) {
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+            name={pagePassword.name}
+            label={pagePassword.label}
+            type={pagePassword.type}
+            id={pagePassword.id}
             error = {!!passwordError}
             helperText = {passwordError}
             value = {password}
@@ -161,7 +160,7 @@ export default function LoginWrapper(props) {
             className={classes.submit}
             disabled={loading}
           >
-            Sign In
+            {pageButton.label}
           </Button>
           }
           {/* <Button
@@ -175,7 +174,7 @@ export default function LoginWrapper(props) {
           <Grid container style={{display: 'flex', justifyContent: 'flex-end'}}>
             <Grid item>
               <Link href="/forgot-pass" variant="body2">
-                Forgot Password?
+                {pageForgotLink}
               </Link>
             </Grid>
           </Grid>
