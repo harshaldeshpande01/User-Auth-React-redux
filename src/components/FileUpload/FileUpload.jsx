@@ -11,7 +11,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 // const BorderLinearProgress = withStyles((theme) => ({
@@ -154,6 +154,8 @@ export default class FileUpload extends Component {
           </Button>
         </label>
         </div>
+
+        {uploading ? <LinearProgress style={{width: '100%', '& > * + *': {marginTop: '5px',},}}/> : null}
 
         {isError ? 
           <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
