@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import LinearProgress from '@material-ui/core/LinearProgress';
 import {Button, ListItem} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import List from '@material-ui/core/List';
@@ -14,20 +13,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
-// const BorderLinearProgress = withStyles((theme) => ({
-//   root: {
-//     height: 15,
-//     borderRadius: 5,
-//   },
-//   colorPrimary: {
-//     backgroundColor: "#EEEEEE",
-//   },
-//   bar: {
-//     borderRadius: 5,
-//     backgroundColor: '#1a90ff',
-//   },
-// }))(LinearProgress);
-
 export default class FileUpload extends Component {
   constructor(props) {
     super(props);
@@ -39,27 +24,31 @@ export default class FileUpload extends Component {
 
     this.state = {
       selectedFiles: [],
-      progress: 0,
       message: "",
       uploading: false,
       isError: false,
-      uploaded: false
     };
   }
 
   selectFile(event) {
-    const currentFile = event.target.files[0];
-    const {size} = currentFile;
-    if(size > 1048576) {
-      this.setState({
-        isError: true,
-        message: 'Maximum file size allowed is 4MB'
-      });
+    const {files} = event.target;
+    const {length} = files;
+    let i;
+    for(i=0; i<length; i+=1) {
+      const currentFile = files[i];
+      const {size} = currentFile;
+      if(size > 1048576) {
+        this.setState({
+          isError: true,
+          message: `${currentFile.name} exceeds maximum allowed file size (4MB)`
+        });
+        break;
+      }
     }
-    else{
+    if(i === length){
       const {selectedFiles} = this.state;
       this.setState({
-        selectedFiles: [...selectedFiles, currentFile] 
+        selectedFiles: [...selectedFiles, ...files] 
       });
     }
   }
@@ -83,7 +72,6 @@ export default class FileUpload extends Component {
         this.setState({
           uploading: false,
           selectedFiles: [],
-          progress: 0,
           message: 'Uploaded files successfully'
         });
       }, 
@@ -93,11 +81,9 @@ export default class FileUpload extends Component {
   cancel() {
     this.setState({
 	    selectedFiles: [],
-      progress: 0,
       message: "",
       uploading: false,
       isError: false,
-      uploaded: true
     });
   }
 
@@ -116,11 +102,9 @@ export default class FileUpload extends Component {
 
     const {
       selectedFiles,
-      progress,
       message,
       uploading,
       isError,
-      uploaded
     } = this.state;
     
     return (
@@ -144,6 +128,7 @@ export default class FileUpload extends Component {
             name="btn-upload"
             style={{ display: 'none' }}
             type="file"
+            multiple
             onChange={this.selectFile} />
           <Button
             className="btn-choose"
@@ -175,18 +160,6 @@ export default class FileUpload extends Component {
           </div> 
           : <></>
         }
-
-        {/* {uploading && 
-          <CircularProgress/>
-            <Box className="mb25" display="flex" alignItems="center">
-              <Box width="100%" mr={1}>
-                <BorderLinearProgress variant="determinate" value={progress} />
-              </Box>
-              <Box minWidth={35}>
-                <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
-              </Box>
-            </Box>
-        } */}
 
         <List>
         {selectedFiles &&
