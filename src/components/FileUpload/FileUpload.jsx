@@ -1,39 +1,41 @@
 import React, { Component } from "react";
-import LinearProgress from '@material-ui/core/LinearProgress';
-import {Container, Box, Typography, Button, ListItem, withStyles } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
+// import LinearProgress from '@material-ui/core/LinearProgress';
+import {Button, ListItem} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import List from '@material-ui/core/List';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
-import FolderIcon from '@material-ui/icons/Folder';
+import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ClearIcon from '@material-ui/icons/Clear';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 
-const BorderLinearProgress = withStyles((theme) => ({
-  root: {
-    height: 15,
-    borderRadius: 5,
-  },
-  colorPrimary: {
-    backgroundColor: "#EEEEEE",
-  },
-  bar: {
-    borderRadius: 5,
-    backgroundColor: '#1a90ff',
-  },
-}))(LinearProgress);
+// const BorderLinearProgress = withStyles((theme) => ({
+//   root: {
+//     height: 15,
+//     borderRadius: 5,
+//   },
+//   colorPrimary: {
+//     backgroundColor: "#EEEEEE",
+//   },
+//   bar: {
+//     borderRadius: 5,
+//     backgroundColor: '#1a90ff',
+//   },
+// }))(LinearProgress);
 
 export default class FileUpload extends Component {
   constructor(props) {
     super(props);
     this.selectFile = this.selectFile.bind(this);
     this.deleteFile = this.deleteFile.bind(this);
+    this.formatBytes = this.formatBytes.bind(this);
     this.upload = this.upload.bind(this);
+    this.cancel = this.cancel.bind(this);
 
     this.state = {
       selectedFiles: [],
@@ -41,43 +43,73 @@ export default class FileUpload extends Component {
       message: "",
       uploading: false,
       isError: false,
+      uploaded: false
     };
   }
 
   selectFile(event) {
-    const {selectedFiles} = this.state;
-    this.setState({
-	    selectedFiles: [...selectedFiles, event.target.files[0]] 
-    });
+    const currentFile = event.target.files[0];
+    const {size} = currentFile;
+    if(size > 1048576) {
+      this.setState({
+        isError: true,
+        message: 'Maximum file size allowed is 4MB'
+      });
+    }
+    else{
+      const {selectedFiles} = this.state;
+      this.setState({
+        selectedFiles: [...selectedFiles, currentFile] 
+      });
+    }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   deleteFile(fileName) {
     const {selectedFiles} = this.state;
-    const index = selectedFiles.findIndex((o) => {
-        return o.name === fileName;
-    })
-    if (index !== -1) selectedFiles.splice(index, 1);
+    selectedFiles.splice(selectedFiles.findIndex(a => a.name === fileName) , 1)
     this.setState({
 	    selectedFiles 
     });
   }
 
-  upload() {
+  upload () {
     this.setState({
-      uploading: true,
-      progress: 50
+      uploading: true
     });
 
     setTimeout(() => 
       { 
         this.setState({
           uploading: false,
-          selectedFiles: undefined,
-          progress: 100,
+          selectedFiles: [],
+          progress: 0,
           message: 'Uploaded files successfully'
         });
       }, 
-    3000);
+    2000);
+  }
+
+  cancel() {
+    this.setState({
+	    selectedFiles: [],
+      progress: 0,
+      message: "",
+      uploading: false,
+      isError: false,
+      uploaded: true
+    });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${parseFloat((bytes / (k ** i)).toFixed(dm))}  ${sizes[i]}`;
   }
 
   render() {
@@ -87,91 +119,112 @@ export default class FileUpload extends Component {
       progress,
       message,
       uploading,
-      isError
+      isError,
+      uploaded
     } = this.state;
     
     return (
 
-      <Container component="main" maxWidth="xs" className="login-container">
-      <CssBaseline />
-      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}} >
+      <div className="App">
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
 
-        <Typography component="h1" variant="h5" style={{marginTop: '1em'}}>
-          <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>Upload files</span>
-        </Typography>
+        <div style={{display: 'flex', flexDirection:'column', width: "90vw", maxWidth: "600px", height: '150px', alignItems: 'center', justifyContent: 'center', border: '1px dashed gray', borderRadius: '5px'}}>
+          <InsertDriveFileOutlinedIcon/>
+          <label htmlFor="btn-upload">
+          <input
+            id="btn-upload"
+            name="btn-upload"
+            style={{ display: 'none' }}
+            type="file"
+            onChange={this.selectFile} />
+          <Button
+            className="btn-choose"
+            component="span"
+            color="primary"
+          >
+            Choose Your Files
+          </Button>
+        </label>
+        </div>
 
-        {isError ? <Alert severity="error">{isError}</Alert> : <></>}
-        {message ? <Alert severity="success">{message}</Alert> : <></>}
+        {isError ? 
+          <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
+            <Alert severity="error">{message}</Alert>
+            <IconButton onClick={() => this.setState({isError: false, message: ""})}>
+              <ClearIcon/>
+            </IconButton>
+          </div> 
+          : <></>
+        }
+        {(!isError && message) ? 
+          <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
+            <Alert severity="success">{message}</Alert>
+            <IconButton onClick={() => this.setState({ message: ""})}>
+              <ClearIcon/>
+            </IconButton>
+          </div> 
+          : <></>
+        }
 
-          <Grid container style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <Grid item xs={12}>
-              <label htmlFor="btn-upload">
-                <input
-                  id="btn-upload"
-                  name="btn-upload"
-                  style={{ display: 'none' }}
-                  type="file"
-                  onChange={this.selectFile} />
-                <Button
-                  className="btn-choose"
-                  variant="outlined"
-                  component="span"
-                >
-                  Choose Files
-                </Button>
-              </label>
-            </Grid>
+        {/* {uploading && 
+          <CircularProgress/>
+            <Box className="mb25" display="flex" alignItems="center">
+              <Box width="100%" mr={1}>
+                <BorderLinearProgress variant="determinate" value={progress} />
+              </Box>
+              <Box minWidth={35}>
+                <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
+              </Box>
+            </Box>
+        } */}
 
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={uploading}
-                onClick={this.upload}
-              >
-                Upload
-              </Button>
-            </Grid>
+        <List>
+        {selectedFiles &&
+          selectedFiles.map((file) => (
+            <ListItem key={file.name} button style={{width: "90vw", maxWidth: "600px"}}>
+              <ListItemIcon>
+                {uploading ? <CircularProgress size={20}/> : <InsertDriveFileOutlinedIcon/>}
+              </ListItemIcon>
+              <ListItemText primary={file.name} secondary={this.formatBytes(file.size)} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end" onClick={() => this.deleteFile(file.name)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          )
+        )}
+        </List>
 
-            <Grid item xs={12}>
-              <List>
-                {selectedFiles &&
-                  selectedFiles.map((file) => (
-                    <ListItem
-                      key={file.name}
-                    >
-                      <ListItemAvatar>
-                        <Avatar>
-                          <FolderIcon />
-                        </Avatar>
-                      </ListItemAvatar>
+        <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'flex-end', marginTop: '1em'}}>
+          <Button 
+            variant="outlined" 
+            color="secondary" 
+            style={{marginRight: '4px'}}
+            onClick={this.cancel}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!(selectedFiles.length>0) || uploading}
+            onClick={this.upload}
+          >
+            Upload
+          </Button>
+        </div>
 
-                      <ListItemText primary={file.name}/>
-
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-
-                    </ListItem>
-                  ))}
-
-              </List>
-              </Grid>
-          </Grid>
+        </div>
       </div>
-    </Container>
-
-      //       {uploading ? (
-      //         <Box className="mb25" display="flex" alignItems="center">
-      //           <Box width="100%" mr={1}>
-      //             <BorderLinearProgress variant="determinate" value={progress} />
-      //           </Box>
-      //           <Box minWidth={35}>
-      //             <Typography variant="body2" color="textSecondary">{`${progress}%`}</Typography>
-      //           </Box>
-      //         </Box>)
 
     );
   }
