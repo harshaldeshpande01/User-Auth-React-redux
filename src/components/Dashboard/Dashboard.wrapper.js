@@ -29,7 +29,7 @@ class DashboardWrapper extends PureComponent {
           <CircularProgress/>
           :
           <div>
-            <AppBar>
+            <AppBar position="static" style={{width: '100%'}}>
             <Toolbar>
               <Grid
                 justify="space-between"
@@ -50,7 +50,9 @@ class DashboardWrapper extends PureComponent {
             </Toolbar>
             </AppBar>
 
-            <FileUpload />
+            <div style={{marginTop: '100px'}}>
+              <FileUpload />
+            </div>
         </div>
         }
       </div>

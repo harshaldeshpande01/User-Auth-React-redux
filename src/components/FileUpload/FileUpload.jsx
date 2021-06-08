@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Button, ListItem} from '@material-ui/core';
+import {Box, Button, ListItem, Typography} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import List from '@material-ui/core/List';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -110,18 +111,29 @@ export default class FileUpload extends Component {
     return (
 
       <div className="App">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-
-        <div style={{display: 'flex', flexDirection:'column', width: "90vw", maxWidth: "600px", height: '150px', alignItems: 'center', justifyContent: 'center', border: '1px dashed gray', borderRadius: '5px'}}>
-          <InsertDriveFileOutlinedIcon/>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+        }}
+      >
+      <Box 
+        m={1} 
+        border={1}
+        borderColor="grey.400"
+        borderRadius={10}
+        fixed
+      >
+        <div style={{display: 'flex', flexDirection:'column', width: "90vw", maxWidth: "1100px", height: '280px', alignItems: 'center', justifyContent: 'center'}}>
+          <InsertDriveFileOutlinedIcon style={{color: 'BDBDBD'}}/>
+          <Box mt={1} style={{maxWidth: '80vw'}}>
+            <Typography variant="h5" align="center">
+              Drag files here to add them to your bucket 
+            </Typography>
+          </Box> 
           <label htmlFor="btn-upload">
           <input
             id="btn-upload"
@@ -134,16 +146,20 @@ export default class FileUpload extends Component {
             className="btn-choose"
             component="span"
             color="primary"
+            style={{backgroundColor: 'transparent', textTransform: 'none'}}
           >
-            Choose Your Files
+            <Typography variant="body2">
+              Or choose your files
+            </Typography>
           </Button>
         </label>
         </div>
+      </Box>
 
-        {uploading ? <LinearProgress style={{width: '100%', '& > * + *': {marginTop: '5px',},}}/> : null}
+        {uploading ? <LinearProgress style={{width: '90vw', maxWidth: '1100px', '& > * + *': {marginTop: '5px',},}}/> : null}
 
         {isError ? 
-          <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
+          <div style={{display: 'flex', width: "90vw", maxWidth: "1100px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
             <Alert severity="error">{message}</Alert>
             <IconButton onClick={() => this.setState({isError: false, message: ""})}>
               <ClearIcon/>
@@ -152,7 +168,7 @@ export default class FileUpload extends Component {
           : <></>
         }
         {(!isError && message) ? 
-          <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
+          <div style={{display: 'flex', width: "90vw", maxWidth: "1100px", justifyContent: 'center', alignItems: 'center', marginTop: '0.5em'}}>
             <Alert severity="success">{message}</Alert>
             <IconButton onClick={() => this.setState({ message: ""})}>
               <ClearIcon/>
@@ -164,7 +180,7 @@ export default class FileUpload extends Component {
         <List>
         {selectedFiles &&
           selectedFiles.map((file) => (
-            <ListItem key={file.name} button style={{width: "90vw", maxWidth: "600px"}}>
+            <ListItem key={file.name} button style={{width: "90vw", maxWidth: "1100px"}}>
               <ListItemIcon>
                 {uploading ? <CircularProgress size={20}/> : <InsertDriveFileOutlinedIcon/>}
               </ListItemIcon>
@@ -179,7 +195,7 @@ export default class FileUpload extends Component {
         )}
         </List>
 
-        <div style={{display: 'flex', width: "90vw", maxWidth: "600px", justifyContent: 'flex-end', marginTop: '1em'}}>
+        <div style={{display: 'flex', width: "90vw", maxWidth: "1100px", justifyContent: 'flex-end', marginTop: '1em', marginBottom: '5em'}}>
           <Button 
             variant="outlined" 
             color="secondary" 
@@ -191,6 +207,7 @@ export default class FileUpload extends Component {
           <Button
             variant="contained"
             color="primary"
+            startIcon={<CloudUploadIcon />}
             disabled={!(selectedFiles.length>0) || uploading}
             onClick={this.upload}
           >
