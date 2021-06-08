@@ -2,13 +2,18 @@ import React, { PureComponent } from 'react';
 import Button from '@material-ui/core/Button';
 import { withRouter } from "react-router-dom";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import FileUpload from '../FileUpload/FileUpload';
 
 class DashboardWrapper extends PureComponent {
 
     constructor(props) {
         super(props);
         this.handleLogout = this.handleLogout.bind(this);
-      }
+    }
 
     handleLogout() {
         const {actions, history} = this.props;
@@ -23,26 +28,30 @@ class DashboardWrapper extends PureComponent {
         {Object.keys(data).length === 0 ?
           <CircularProgress/>
           :
-          <div style={{ height: "75vh" }} className="container valign-wrapper">
-            <div className="row">
-            <div className="col s12 center-align">
-                <h4>
-                <b>Hey there,</b> {data.email}
-                <p className="flow-text grey-text text-darken-1">
-                    You are logged in successfully <span role="img" aria-label="hello">👏</span>
-                </p>
-                </h4>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={this.handleLogout}
-                >
+          <div>
+            <AppBar>
+            <Toolbar>
+              <Grid
+                justify="space-between"
+                container 
+              >
+                <Grid item>
+                  <Typography type="title" color="inherit">
+                    Navbar
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <Button color="inherit" onClick={this.handleLogout}>
                     Logout
-                </Button>
-            </div>
-            </div>
-          </div>
+                  </Button>
+                </Grid>
+              </Grid>
+            </Toolbar>
+            </AppBar>
+
+            <FileUpload />
+        </div>
         }
       </div>
     );
