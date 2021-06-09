@@ -12,6 +12,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ClearIcon from '@material-ui/icons/Clear';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import DragAndDrop from '../DragAndDrop/DragandDrop';
 
 
 export default class FileUpload extends Component {
@@ -31,14 +32,13 @@ export default class FileUpload extends Component {
     };
   }
 
-  selectFile(event) {
-    const {files} = event.target;
+  selectFile(files) {
     const {length} = files;
     let i;
     for(i=0; i<length; i+=1) {
       const currentFile = files[i];
       const {size} = currentFile;
-      if(size > 1048576) {
+      if(size > 10485760) {
         this.setState({
           isError: true,
           message: `${currentFile.name} exceeds maximum allowed file size (4MB)`
@@ -88,6 +88,7 @@ export default class FileUpload extends Component {
     });
   }
 
+
   // eslint-disable-next-line class-methods-use-this
   formatBytes(bytes, decimals = 2) {
     if (bytes === 0) return '0 Bytes';
@@ -125,8 +126,8 @@ export default class FileUpload extends Component {
         border={1}
         borderColor="grey.400"
         borderRadius={10}
-        fixed
       >
+        <DragAndDrop handleDrop={this.selectFile}>
         <div style={{display: 'flex', flexDirection:'column', width: "90vw", maxWidth: "1100px", height: '280px', alignItems: 'center', justifyContent: 'center'}}>
           <InsertDriveFileOutlinedIcon style={{color: 'BDBDBD'}}/>
           <Box mt={1} style={{maxWidth: '80vw'}}>
@@ -141,7 +142,7 @@ export default class FileUpload extends Component {
             style={{ display: 'none' }}
             type="file"
             multiple
-            onChange={this.selectFile} />
+            onChange={(e) => this.selectFile(e.target.files)} />
           <Button
             className="btn-choose"
             component="span"
@@ -154,6 +155,7 @@ export default class FileUpload extends Component {
           </Button>
         </label>
         </div>
+        </DragAndDrop>
       </Box>
 
         {uploading ? <LinearProgress style={{width: '90vw', maxWidth: '1100px', '& > * + *': {marginTop: '5px',},}}/> : null}
@@ -182,7 +184,7 @@ export default class FileUpload extends Component {
           selectedFiles.map((file) => (
             <ListItem key={file.name} button style={{width: "90vw", maxWidth: "1100px"}}>
               <ListItemIcon>
-                {uploading ? <CircularProgress size={20}/> : <InsertDriveFileOutlinedIcon/>}
+                {uploading ? <CircularProgress size={20}/> : <InsertDriveFileOutlinedIcon style={{color: 'BDBDBD'}}/>}
               </ListItemIcon>
               <ListItemText primary={file.name} secondary={this.formatBytes(file.size)} />
               <ListItemSecondaryAction>
@@ -207,7 +209,7 @@ export default class FileUpload extends Component {
           <Button
             variant="contained"
             color="primary"
-            startIcon={<CloudUploadIcon />}
+            endIcon={<CloudUploadIcon />}
             disabled={!(selectedFiles.length>0) || uploading}
             onClick={this.upload}
           >
