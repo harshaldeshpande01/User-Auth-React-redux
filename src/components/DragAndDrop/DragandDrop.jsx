@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Box, Typography} from '@material-ui/core';
+import {Typography} from '@material-ui/core';
 
 class DragAndDrop extends Component {
     dropRef = React.createRef()

@@ -89,7 +89,7 @@ export default function LoginWrapper() {
       <CssBaseline />
       <div className={classes.paper}>
 
-        <Typography component="h1" variant="h5" style={{marginTop: '1em'}}>
+        <Typography component="h1" variant="h5" style={{marginTop: '5em'}}>
           <span style={{fontWeight: 'bolder', fontSize: '1.3em'}}>Reset Password</span>
         </Typography>
 
