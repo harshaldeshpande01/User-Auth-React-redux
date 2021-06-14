@@ -1,21 +1,27 @@
-import React, { Suspense } from 'react';
-import DashboardContainer from '../../components/Dashboard/Dashboard.Container';
+import React from 'react';
+// import DashboardContainer from '../../components/Dashboard/Dashboard.Container'
 
 const LoginContainer = React.lazy(() =>
   import(
-    'components/Login/Login.Container' /* webpackChunkName: "Login.Container" */
+    '../../components/Login/Login.Container' /* webpackChunkName: "Login.Container" */
   ),
 );
 
-const Register = React.lazy(() =>
+const RegisterContainer = React.lazy(() =>
   import(
-    'components/Register/Register.Container' /* webpackChunkName: "Login.Container" */
+    '../../components/Register/Register.Container' 
   ),
 );
 
 const ForgotPass = React.lazy(() =>
   import(
-    'components/ForgotPass/ForgotPass' /* webpackChunkName: "Login.Container" */
+    '../../components/ForgotPass/ForgotPass'
+  ),
+);
+
+const DashboardContainer = React.lazy(() =>
+  import(
+    '../../components/Dashboard/Dashboard.Container' 
   ),
 );
 
@@ -37,7 +43,7 @@ const appRoutes = {
     },
     register: {
       path: '/register',
-      component: Register,
+      component: RegisterContainer,
       needAuth: false,
       exact: false,
     },

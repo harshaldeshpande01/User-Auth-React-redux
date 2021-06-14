@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import DashboardWrapper from './Dashboard.wrapper';
@@ -7,7 +8,7 @@ import { performLogout } from '../Login/Login.actions';
 class DashboardContainer extends PureComponent {
   
   render() {
-    const {data, actions} = this.props;
+    const {data, actions} = this.props
     return <DashboardWrapper data={data} actions={actions}/>;
   }
 }

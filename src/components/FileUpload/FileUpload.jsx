@@ -6,7 +6,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import InsertDriveFileOutlinedIcon from '@material-ui/icons/InsertDriveFileOutlined';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import DeleteIcon from '@material-ui/icons/Delete';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -182,17 +182,25 @@ export default class FileUpload extends Component {
         <List>
         {selectedFiles &&
           selectedFiles.map((file) => (
-            <ListItem key={file.name} button style={{width: "90vw", maxWidth: "1100px"}}>
+            <Box 
+              border={1}
+              borderColor="grey.400"
+              borderRadius={10}
+              key={file.name}
+            >
+            <ListItem button style={{width: "90vw", maxWidth: "1100px"}}>
               <ListItemIcon>
                 {uploading ? <CircularProgress size={20}/> : <InsertDriveFileOutlinedIcon style={{color: 'BDBDBD'}}/>}
               </ListItemIcon>
-              <ListItemText primary={file.name} secondary={this.formatBytes(file.size)} />
+              <ListItemText primary={file.name}/>
+              {/* secondary={this.formatBytes(file.size) */}
               <ListItemSecondaryAction>
                 <IconButton edge="end" onClick={() => this.deleteFile(file.name)}>
-                  <DeleteIcon />
+                  <ClearIcon/>
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
+            </Box>
           )
         )}
         </List>

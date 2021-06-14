@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import RegisterWrapper from './Register.wrapper';
 import { performRegister} from './Register.actions';
 
-class LoginContainer extends PureComponent {
+class RegisterContainer extends PureComponent {
   
   render() {
     const {loading, error, data, actions} = this.props
@@ -27,5 +27,5 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(LoginContainer),
+  connect(mapStateToProps, mapDispatchToProps)(RegisterContainer),
 );

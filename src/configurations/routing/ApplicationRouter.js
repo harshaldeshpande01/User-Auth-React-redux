@@ -11,6 +11,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const AuthenticatedRoute = ({ children, ...rest }) => (
   <Route
@@ -69,7 +70,11 @@ const routes = allappRoutes.map((route, index) => {
 
 const ApplicationRouter = () => (
   <Router>
-    <Suspense fallback={null}>
+    <Suspense fallback={
+      <div style={{height: '100vh', width: '100vw', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <CircularProgress/>
+      </div>
+    }>
       <Switch>
         <>{routes}</>
       </Switch>

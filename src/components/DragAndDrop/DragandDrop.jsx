@@ -74,9 +74,9 @@ class DragAndDrop extends Component {
         {drag ?
           <div 
             style={{
-              border: 'dashed grey 1px',
-              borderRadius: '10px',
-              backgroundColor: 'rgba(255,255,255,.8)',
+              // border: 'dashed grey 1px',
+              // borderRadius: '10px',
+              backgroundColor: '#eaf1f8',
               position: 'absolute',
               top: 0,
               bottom: 0,
